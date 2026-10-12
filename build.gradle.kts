@@ -23,7 +23,7 @@ labyMod {
     }
 
     addonInfo {
-        namespace = "opads"
+        namespace = "opwerbung"
         displayName = "OP Ads"
         author = "NICESHOP"
         description = "Cooldown HUD and management for chat advertisements. Built for OPSUCHT.NET, usable on other servers as well."
