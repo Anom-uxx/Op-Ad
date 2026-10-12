@@ -6,7 +6,7 @@ plugins {
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
 
 group = "org.anomuxx"
-version = providers.environmentVariable("VERSION").getOrElse("1.0.1")
+version = providers.environmentVariable("VERSION").getOrElse("1.0.0")
 
 labyMod {
     defaultPackageName = "org.anomuxx.core" //change this to your main package name (used by all modules)
