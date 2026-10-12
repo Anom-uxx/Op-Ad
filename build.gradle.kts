@@ -9,7 +9,7 @@ group = "org.anomuxx"
 version = providers.environmentVariable("VERSION").getOrElse("1.0.1")
 
 labyMod {
-    defaultPackageName = "org.example" //change this to your main package name (used by all modules)
+    defaultPackageName = "org.anomuxx.core" //change this to your main package name (used by all modules)
 
     minecraft {
         registerVersion(versions.toTypedArray()) {
@@ -23,7 +23,7 @@ labyMod {
     }
 
     addonInfo {
-        namespace = "opwerbung"
+        namespace = "opads"
         displayName = "OP Ads"
         author = "NICESHOP"
         description = "Cooldown HUD and management for chat advertisements. Built for OPSUCHT.NET, usable on other servers as well."
