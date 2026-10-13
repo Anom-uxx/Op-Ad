@@ -18,14 +18,16 @@ public class OpAdCommand extends Command {
   @Override
   public boolean execute(String prefix, String[] arguments) {
     if (arguments.length < 2) {
-      return false;
+      this.error();
+      return true;
     }
 
     int index;
     try {
       index = Integer.parseInt(arguments[1]);
     } catch (NumberFormatException exception) {
-      return false;
+      this.error();
+      return true;
     }
 
     if (arguments[0].equalsIgnoreCase("confirm")) {
@@ -49,7 +51,8 @@ public class OpAdCommand extends Command {
       return true;
     }
 
-    return false;
+    this.error();
+    return true;
   }
 
   private void error() {

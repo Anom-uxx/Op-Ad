@@ -1,0 +1,302 @@
+diff --git a/core/src/main/java/org/anomuxx/core/commands/OpAdCommand.java b/core/src/main/java/org/anomuxx/core/commands/OpAdCommand.java
+index cd3ec7c..a67b90e 100644
+--- a/core/src/main/java/org/anomuxx/core/commands/OpAdCommand.java
++++ b/core/src/main/java/org/anomuxx/core/commands/OpAdCommand.java
+@@ -18,14 +18,16 @@ public class OpAdCommand extends Command {
+   @Override
+   public boolean execute(String prefix, String[] arguments) {
+     if (arguments.length < 2) {
+-      return false;
++      this.error();
++      return true;
+     }
+ 
+     int index;
+     try {
+       index = Integer.parseInt(arguments[1]);
+     } catch (NumberFormatException exception) {
+-      return false;
++      this.error();
++      return true;
+     }
+ 
+     if (arguments[0].equalsIgnoreCase("confirm")) {
+@@ -49,7 +51,8 @@ public class OpAdCommand extends Command {
+       return true;
+     }
+ 
+-    return false;
++    this.error();
++    return true;
+   }
+ 
+   private void error() {
+diff --git a/core/src/main/java/org/anomuxx/core/listener/ChatListener.java b/core/src/main/java/org/anomuxx/core/listener/ChatListener.java
+index 3daca4d..2f0cc99 100644
+--- a/core/src/main/java/org/anomuxx/core/listener/ChatListener.java
++++ b/core/src/main/java/org/anomuxx/core/listener/ChatListener.java
+@@ -56,6 +56,10 @@ public class ChatListener {
+ 
+   @Subscribe
+   public void onChatMessageSend(ChatMessageSendEvent event) {
++    if (!Boolean.TRUE.equals(this.addon.configuration().enabled().get())) {
++      return;
++    }
++
+     String message = event.getMessage();
+ 
+     String allowed = this.allowText;
+diff --git a/core/src/main/resources/assets/opwerbung/lang/de_de.json b/core/src/main/resources/assets/opwerbung/i18n/de_de.json
+similarity index 66%
+rename from core/src/main/resources/assets/opwerbung/lang/de_de.json
+rename to core/src/main/resources/assets/opwerbung/i18n/de_de.json
+index 3f61b3d..a8182f0 100644
+--- a/core/src/main/resources/assets/opwerbung/lang/de_de.json
++++ b/core/src/main/resources/assets/opwerbung/i18n/de_de.json
+@@ -1,7 +1,5 @@
+ {
+   "opwerbung.name": "OP Werbung",
+-  "opwerbung.gui.title": "Werbungsmanager",
+-  "opwerbung.gui.settings": "Einstellungen",
+   "opwerbung.settings.enabled.name": "Aktiviert",
+   "opwerbung.settings.adDuration.name": "Werbe-Intervall",
+   "opwerbung.settings.adDuration.description": "Legt fest, wie viel Zeit zwischen Werbungen vergehen muss.",
+@@ -114,111 +112,26 @@
+   "opwerbung.hudWidget.ad17.name": "Werbung 18",
+   "opwerbung.hudWidget.ad18.name": "Werbung 19",
+   "opwerbung.hudWidget.ad19.name": "Werbung 20",
+-  "opwerbung.messages.saveserver.usage": "Nutzung: /opwerbung saveserver <Name>  oder  /opwerbung addserver",
+-  "opwerbung.messages.saveserver.success": "Server \"%s\" gespeichert (%s).",
+-  "opwerbung.messages.saveserver.fail": "Konnte Server nicht speichern (nicht verbunden?).",
+-  "opwerbung.settings.savedServers.name": "Gespeicherte Server",
+-  "opwerbung.settings.savedServers.entry": "Neuer Server",
+-  "opwerbung.settings.savedServers.name.name": "Name",
+-  "opwerbung.settings.savedServers.address.name": "Adresse",
+-  "opwerbung.settings.serverGroups.name": "Server-Gruppen",
+-  "opwerbung.settings.serverGroups.entry": "Neue Gruppe",
+-  "opwerbung.settings.serverGroups.name.name": "Gruppenname",
+-  "opwerbung.settings.serverGroups.members.name": "Mitglieder (eine Adresse oder gespeicherter Name pro Zeile)",
+   "opwerbung.settings.adManager.ad0.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad0.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad1.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad1.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad2.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad2.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad3.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad3.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad4.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad4.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad5.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad5.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad6.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad6.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad7.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad7.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad8.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad8.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad9.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad9.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad10.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad10.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad11.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad11.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad12.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad12.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad13.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad13.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad14.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad14.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad15.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad15.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad16.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad16.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad17.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad17.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad18.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad18.serverGroup.name": "Server-Gruppe",
+   "opwerbung.settings.adManager.ad19.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad19.serverGroup.name": "Server-Gruppe",
+-  "opwerbung.messages.saveserver.needName": "Bitte einen Namen eingeben.",
+-  "opwerbung.messages.saveserver.needAddress": "Bitte eine Adresse eingeben.",
+-  "opwerbung.settings.savedServers.description": "Server mit Namen speichern. Besser: /opwerbung addserver öffnet einen Dialog mit vorausgefüllter IP.",
+-  "opwerbung.settings.serverGroups.description": "Gruppen bündeln Server (z. B. Nether, Citybuild). In jeder Werbung kannst du eine Gruppe eintragen – dann gilt die Werbung nur dort.",
+-  "opwerbung.settings.serverGroups.members.description": "Pro Zeile eine Server-Adresse oder den Namen eines gespeicherten Servers.",
+-  "opwerbung.gui.addServer.title": "Server speichern",
+-  "opwerbung.gui.addServer.nameLabel": "Anzeigename",
+-  "opwerbung.gui.addServer.namePlaceholder": "z. B. Farmwelt 1",
+-  "opwerbung.gui.addServer.addressLabel": "Adresse / IP",
+-  "opwerbung.gui.addServer.addressPlaceholder": "host oder host:port",
+-  "opwerbung.gui.addServer.save": "Speichern",
+-  "opwerbung.gui.addServer.cancel": "Abbrechen",
+-  "opwerbung.settings.adManager.ad0.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad1.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad2.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad3.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad4.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad5.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad6.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad7.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad8.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad9.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad10.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad11.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad12.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad13.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad14.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad15.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad16.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad17.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad18.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.settings.adManager.ad19.serverGroup.description": "Optional: Name einer Server-Gruppe. Leer = auf allen Servern. Mit Gruppe = nur auf Servern dieser Gruppe.",
+-  "opwerbung.messages.sent": "Werbung gesendet.",
+-  "opwerbung.messages.sendFailed": "Senden fehlgeschlagen.",
+-  "opwerbung.messages.sentAnyway": "Werbung trotz Cooldown gesendet.",
+-  "opwerbung.gui.manager.title": "OP Werbung – Manager",
+-  "opwerbung.gui.manager.addServer": "Server speichern…",
+-  "opwerbung.gui.manager.adsHeader": "Aktive Werbungen",
+-  "opwerbung.gui.manager.close": "Schließen",
+-  "opwerbung.settings.openServerGroups.name": "Server-Gruppen verwalten",
+-  "opwerbung.settings.openServerGroups.text": "Öffnen",
+-  "opwerbung.gui.groups.title": "Server-Gruppen",
+-  "opwerbung.gui.groups.serversHeader": "Gespeicherte Server",
+-  "opwerbung.gui.groups.noServers": "Noch keine Server gespeichert.",
+-  "opwerbung.gui.groups.addServerButton": "Server hinzufügen…",
+-  "opwerbung.gui.groups.groupsHeader": "Gruppen (zum Auswählen den Namen in die Werbung eintragen)",
+-  "opwerbung.gui.groups.noGroups": "Noch keine Gruppen.",
+-  "opwerbung.gui.groups.newGroupHeader": "Neue Gruppe anlegen",
+-  "opwerbung.gui.groups.groupNamePlaceholder": "Gruppenname z. B. Nether",
+-  "opwerbung.gui.groups.membersPlaceholder": "Mitglieder: Name oder IP, mit Komma getrennt",
+-  "opwerbung.gui.groups.createGroup": "Gruppe erstellen",
+-  "opwerbung.gui.groups.needGroupName": "Bitte einen Gruppennamen eingeben.",
+-  "opwerbung.gui.groups.groupCreated": "Gruppe \"%s\" erstellt.",
+-  "opwerbung.gui.groups.close": "Schließen",
+   "opwerbung.hudWidget.ad0.settings.displaySize.name": "Größe",
+   "opwerbung.hudWidget.ad0.settings.displaySize.description": "Seitenlänge des Rings in Pixeln (5–128). Zuverlässiger als Ziehen im Editor.",
+   "labymod.hudWidget.ad0.settings.displaySize.name": "Größe",
+diff --git a/core/src/main/resources/assets/opwerbung/lang/en_us.json b/core/src/main/resources/assets/opwerbung/i18n/en_us.json
+similarity index 67%
+rename from core/src/main/resources/assets/opwerbung/lang/en_us.json
+rename to core/src/main/resources/assets/opwerbung/i18n/en_us.json
+index a5290b8..52df2cf 100644
+--- a/core/src/main/resources/assets/opwerbung/lang/en_us.json
++++ b/core/src/main/resources/assets/opwerbung/i18n/en_us.json
+@@ -1,7 +1,5 @@
+ {
+   "opwerbung.name": "OP Ads",
+-  "opwerbung.gui.title": "Ad Manager",
+-  "opwerbung.gui.settings": "Settings",
+   "opwerbung.settings.enabled.name": "Enabled",
+   "opwerbung.settings.adDuration.name": "Ad Interval",
+   "opwerbung.settings.adDuration.description": "Sets how much time passes between ads.",
+@@ -114,111 +112,26 @@
+   "opwerbung.hudWidget.ad17.name": "Ad 18",
+   "opwerbung.hudWidget.ad18.name": "Ad 19",
+   "opwerbung.hudWidget.ad19.name": "Ad 20",
+-  "opwerbung.messages.saveserver.usage": "Usage: /opwerbung saveserver <Name>  or  /opwerbung addserver",
+-  "opwerbung.messages.saveserver.success": "Server \"%s\" saved (%s).",
+-  "opwerbung.messages.saveserver.fail": "Could not save server (not connected?).",
+-  "opwerbung.settings.savedServers.name": "Saved Servers",
+-  "opwerbung.settings.savedServers.entry": "New Server",
+-  "opwerbung.settings.savedServers.name.name": "Name",
+-  "opwerbung.settings.savedServers.address.name": "Address",
+-  "opwerbung.settings.serverGroups.name": "Server Groups",
+-  "opwerbung.settings.serverGroups.entry": "New Group",
+-  "opwerbung.settings.serverGroups.name.name": "Group name",
+-  "opwerbung.settings.serverGroups.members.name": "Members (one address or saved name per line)",
+   "opwerbung.settings.adManager.ad0.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad0.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad1.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad1.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad2.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad2.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad3.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad3.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad4.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad4.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad5.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad5.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad6.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad6.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad7.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad7.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad8.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad8.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad9.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad9.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad10.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad10.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad11.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad11.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad12.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad12.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad13.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad13.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad14.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad14.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad15.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad15.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad16.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad16.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad17.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad17.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad18.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad18.serverGroup.name": "Server Group",
+   "opwerbung.settings.adManager.ad19.sound.name": "Sound",
+-  "opwerbung.settings.adManager.ad19.serverGroup.name": "Server Group",
+-  "opwerbung.messages.saveserver.needName": "Please enter a name.",
+-  "opwerbung.messages.saveserver.needAddress": "Please enter an address.",
+-  "opwerbung.settings.savedServers.description": "Save servers by name. Better: /opwerbung addserver opens a dialog with the current IP pre-filled.",
+-  "opwerbung.settings.serverGroups.description": "Groups bundle servers (e.g. Nether, Citybuild). Assign a group on each ad so it only runs there.",
+-  "opwerbung.settings.serverGroups.members.description": "One server address or saved server name per line.",
+-  "opwerbung.gui.addServer.title": "Save Server",
+-  "opwerbung.gui.addServer.nameLabel": "Display name",
+-  "opwerbung.gui.addServer.namePlaceholder": "e.g. Farm World 1",
+-  "opwerbung.gui.addServer.addressLabel": "Address / IP",
+-  "opwerbung.gui.addServer.addressPlaceholder": "host or host:port",
+-  "opwerbung.gui.addServer.save": "Save",
+-  "opwerbung.gui.addServer.cancel": "Cancel",
+-  "opwerbung.settings.adManager.ad0.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad1.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad2.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad3.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad4.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad5.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad6.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad7.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad8.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad9.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad10.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad11.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad12.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad13.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad14.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad15.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad16.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad17.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad18.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.settings.adManager.ad19.serverGroup.description": "Optional: name of a server group. Empty = all servers. With group = only on servers in that group.",
+-  "opwerbung.messages.sent": "Ad sent.",
+-  "opwerbung.messages.sendFailed": "Failed to send.",
+-  "opwerbung.messages.sentAnyway": "Ad sent despite cooldown.",
+-  "opwerbung.gui.manager.title": "OP Ads – Manager",
+-  "opwerbung.gui.manager.addServer": "Save server…",
+-  "opwerbung.gui.manager.adsHeader": "Active ads",
+-  "opwerbung.gui.manager.close": "Close",
+-  "opwerbung.settings.openServerGroups.name": "Manage server groups",
+-  "opwerbung.settings.openServerGroups.text": "Open",
+-  "opwerbung.gui.groups.title": "Server Groups",
+-  "opwerbung.gui.groups.serversHeader": "Saved servers",
+-  "opwerbung.gui.groups.noServers": "No servers saved yet.",
+-  "opwerbung.gui.groups.addServerButton": "Add server…",
+-  "opwerbung.gui.groups.groupsHeader": "Groups (enter the name in the ad settings to select)",
+-  "opwerbung.gui.groups.noGroups": "No groups yet.",
+-  "opwerbung.gui.groups.newGroupHeader": "Create new group",
+-  "opwerbung.gui.groups.groupNamePlaceholder": "Group name e.g. Nether",
+-  "opwerbung.gui.groups.membersPlaceholder": "Members: name or IP, comma-separated",
+-  "opwerbung.gui.groups.createGroup": "Create group",
+-  "opwerbung.gui.groups.needGroupName": "Please enter a group name.",
+-  "opwerbung.gui.groups.groupCreated": "Group \"%s\" created.",
+-  "opwerbung.gui.groups.close": "Close",
+   "opwerbung.hudWidget.ad0.settings.displaySize.name": "Size",
+   "opwerbung.hudWidget.ad0.settings.displaySize.description": "Side length of the ring in pixels (5–128). More reliable than dragging in the editor.",
+   "labymod.hudWidget.ad0.settings.displaySize.name": "Size",

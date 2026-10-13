@@ -56,6 +56,10 @@ public class ChatListener {
 
   @Subscribe
   public void onChatMessageSend(ChatMessageSendEvent event) {
+    if (!Boolean.TRUE.equals(this.addon.configuration().enabled().get())) {
+      return;
+    }
+
     String message = event.getMessage();
 
     String allowed = this.allowText;
